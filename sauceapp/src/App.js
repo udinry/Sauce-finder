@@ -8,6 +8,8 @@ import React from 'react';
 import{ useEffect, useState } from "react";
 import { Button } from '@material-ui/core';
 import {Input} from '@material-ui/core'
+import ImageUpload from './ImageUpload';
+
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -67,7 +69,7 @@ function App() {
 
 
   useEffect(()=>{
-    db.collection('Posts').onSnapshot(snapshot => {
+    db.collection('Posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
       setPosts(snapshot.docs.map(doc =>({
       id: doc.id,
       post: doc.data()
@@ -97,6 +99,8 @@ function App() {
   return (
     <div className="app">
 
+        
+        
         <Modal
           open={open}
           onClose={() => setOpen(false)}
@@ -186,7 +190,6 @@ function App() {
           className="app__headerImage"
           src={logo} alt=""
           />
-          </div>
           {user ? (
           <Button onClick={() =>auth.signOut()}>Log Out</Button>
           ): (
@@ -196,17 +199,25 @@ function App() {
             <Button onClick={() => setOpen(true)}>Sign Up</Button>
             </div>
           )}
+          </div>
           
+          {user?.displayName ?(
+          <ImageUpload username={user.displayName}/>
+        ): (
+          <h3>You need to login to ask for Sauce</h3>
+        )}
+        <div className="app__posts">
           {
             posts.map(({id,post}) => (
-              <Posts key={id}username={post.username} caption={post.caption} imageUrl={post.imageUrl}/>
+              <Posts key={id} postId={id}username={post.username} caption={post.caption} imageUrl={post.imageUrl}/>
             ))
           }
-          <Posts username="Udbhav Naryani" caption="*InsertCoolCaptionHere*" imageUrl="https://m.media-amazon.com/images/M/MV5BZmZhNWMyODgtMzA0OC00NWFhLTllODQtYmJkZjYxYWU4MGU1XkEyXkFqcGdeQWFybm8@._V1_.jpg"/>
-          <Posts username="Udbhav Naryani" caption="*InsertCoolCaptionHere*" imageUrl="https://m.media-amazon.com/images/M/MV5BZmZhNWMyODgtMzA0OC00NWFhLTllODQtYmJkZjYxYWU4MGU1XkEyXkFqcGdeQWFybm8@._V1_.jpg"/>
-          <Posts username="Udbhav Naryani" caption="*InsertCoolCaptionHere*" imageUrl="https://m.media-amazon.com/images/M/MV5BZmZhNWMyODgtMzA0OC00NWFhLTllODQtYmJkZjYxYWU4MGU1XkEyXkFqcGdeQWFybm8@._V1_.jpg"/>
-          
-        
+          <Posts username="Rohit Sharma" caption="*InsertCoolCaptionHere*" imageUrl="https://m.media-amazon.com/images/M/MV5BZmZhNWMyODgtMzA0OC00NWFhLTllODQtYmJkZjYxYWU4MGU1XkEyXkFqcGdeQWFybm8@._V1_.jpg"/>
+          </div>
+          <div>
+          <script async src="https://cse.google.com/cse.js?cx=2877a82bf1e822756"></script>
+<div class="gcse-search"></div>
+          </div>
 
        
 
